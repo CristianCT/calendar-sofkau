@@ -70,10 +70,11 @@ class SchedulerServiceTest {
                             && programDate.getCategoryName().equals("Fundamentos");
                 })
                 .verifyComplete();
-        
+
         StepVerifier.create(response) //TODO: hacer de otro modo
                 .expectNextCount(6)
                 .verifyComplete();
+
         Mockito.verify(repository).findById(programId);
     }
 
@@ -83,15 +84,14 @@ class SchedulerServiceTest {
         var startDate = LocalDate.of(2022, 1, 1);
 
         Mockito.when(repository.findById(programId)).thenReturn(Mono.empty());
+        
+        Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate); //TODO: hacer una subscripción de el servicio reactivo
 
         //TODO: hacer de otro modo
-        var exception = Assertions.assertThrows(RuntimeException.class, () -> {
-            schedulerService.generateCalendar(programId, startDate);//TODO: hacer una subscripción de el servicio reactivo
-
-        });
-        Assertions.assertEquals("El programa academnico no existe", exception.getMessage());//TODO: hacer de otro modo
+        StepVerifier.create(response)
+            .expectErrorMessage("ERROR: FLUJO VACIO")
+            .verify();
         Mockito.verify(repository).findById(programId);
-
     }
 
     //no tocar
