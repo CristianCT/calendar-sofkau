@@ -5,6 +5,7 @@ import co.com.sofka.calendar.model.ProgramDate;
 import co.com.sofka.calendar.repositories.ProgramRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -24,7 +25,7 @@ public class SchedulerService {
     private ProgramRepository programRepository;
 
     //TODO: deben retornar un flux de programDate Flux<ProgramDate>
-    public List<ProgramDate> generateCalendar(String programId, LocalDate startDate) {
+    public Flux<ProgramDate> generateCalendar(String programId, LocalDate startDate) {
         var endDate = new AtomicReference<>(LocalDate.from(startDate));
         final AtomicInteger[] pivot = {new AtomicInteger()};
         final int[] index = {0};
