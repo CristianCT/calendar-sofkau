@@ -43,6 +43,33 @@ class SchedulerServiceTest {
         Mockito.when(repository.findById(programId)).thenReturn(Mono.just(program));
         //TODO: hacer una subscripción de el servicio reactivo
         Flux<ProgramDate> response = schedulerService.generateCalendar(programId, startDate);
+
+        StepVerifier.create(response) //TODO: hacer de otro modo
+                .expectNextMatches(programDate -> {
+                    return programDate.getDate().toString().equals("2022-01-03")
+                            && programDate.getCategoryName().equals("Principios");
+                })
+                .expectNextMatches(programDate -> {
+                    return programDate.getDate().toString().equals("2022-01-04")
+                            && programDate.getCategoryName().equals("Bases");
+                })
+                .expectNextMatches(programDate -> {
+                    return programDate.getDate().toString().equals("2022-01-05")
+                            && programDate.getCategoryName().equals("Bases");
+                })
+                .expectNextMatches(programDate -> {
+                    return programDate.getDate().toString().equals("2022-01-06")
+                            && programDate.getCategoryName().equals("Fundamentos");
+                })
+                .expectNextMatches(programDate -> {
+                    return programDate.getDate().toString().equals("2022-01-07")
+                            && programDate.getCategoryName().equals("Fundamentos");
+                })
+                .expectNextMatches(programDate -> {
+                    return programDate.getDate().toString().equals("2022-01-10")
+                            && programDate.getCategoryName().equals("Fundamentos");
+                })
+                .verifyComplete();
         
         StepVerifier.create(response) //TODO: hacer de otro modo
                 .expectNextCount(6)
