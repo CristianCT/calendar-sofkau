@@ -13,7 +13,11 @@ public class ProgramDateService {
     @Autowired
     ProgramDateRepository programDateRepository;
 
-    public Flux<ProgramDate> save(Flux<ProgramDate> program) {
+    public Flux<ProgramDate> saveAll(Flux<ProgramDate> program) {
         return programDateRepository.saveAll(program);
+    }
+
+    public Flux<ProgramDate> getAll(){
+        return programDateRepository.findAll();
     }
 }

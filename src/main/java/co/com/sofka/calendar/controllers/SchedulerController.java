@@ -23,11 +23,16 @@ public class SchedulerController {
     private ProgramDateService programDateService;
 
     @GetMapping("/{id}/{date}")
-    public Flux<ProgramDate> getPrograms(@PathVariable("id") String id, @PathVariable("date") String date){
+    public Flux<ProgramDate> generateCalendar(@PathVariable("id") String id, @PathVariable("date") String date){
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         LocalDate localDate = LocalDate.parse(date, formatter);
         Flux<ProgramDate> result =  schedulerService.generateCalendar(id, localDate);
 
-        return programDateService.save(result);
+        return programDateService.saveAll(result);
+    }
+
+    @GetMapping("/")
+    private Flux<ProgramDate> getPrograms(){
+        return programDateService.getAll();
     }
 }
